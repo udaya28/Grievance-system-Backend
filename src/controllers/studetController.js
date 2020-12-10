@@ -2,7 +2,6 @@ const Complaint = require('../model/complaintModel');
 
 exports.getComplaint = async (req, res) => {
     try {
-        console.log(req.body.data.id)
       const complaints = await Complaint.find(req.body.data.id);
       res.status(200).json({
         status: 'success',
