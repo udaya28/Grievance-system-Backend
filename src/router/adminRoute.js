@@ -1,11 +1,18 @@
 const express = require('express');
+const { createStudent ,updateStudent,deleteStudent,getStudent } = require('../controllers/adminController');
 
 const adminRouter = express.Router();
-
 adminRouter
-  .route('/')
-  .get((req, res) => {res.send("hello")})
-  .post(() => console.log('hi'));
+  .route('/studentDetails')
+  .get(getStudent)
+  .post(createStudent)
+  .patch(updateStudent)
+  .delete(deleteStudent);
 
+
+
+adminRouter.route('/complaints').get((req, res) => {
+  res.send('all complaints');
+});
 
 module.exports = adminRouter;
