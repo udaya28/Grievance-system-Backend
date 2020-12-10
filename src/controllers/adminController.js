@@ -1,5 +1,5 @@
+const complaint = require('../model/complaintModel');
 const studentDetails = require('../model/userModel');
-
 exports.getStudent = async (req, res) => {
     try {
       const Students = await studentDetails.find({});
