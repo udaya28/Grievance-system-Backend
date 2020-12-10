@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-const adminRoute = require('./src/router/adminRoute')
+const adminRouter = require('./src/router/adminRoute')
+const studentRouter = require('./src/router/studentRoute')
 const app = express();
 
 app.use(morgan('dev'));
@@ -10,5 +11,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/admin',adminRoute);
+app.use('/admin',adminRouter);
+app.use('/student',studentRouter)
 module.exports = app;

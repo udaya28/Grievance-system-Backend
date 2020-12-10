@@ -1,5 +1,12 @@
 const express = require('express');
-const { createStudent ,updateStudent,deleteStudent,getStudent } = require('../controllers/adminController');
+const {
+  createStudent,
+  updateStudent,
+  deleteStudent,
+  getStudent,
+  responseComplaint,
+  getComplaints
+} = require('../controllers/adminController');
 
 const adminRouter = express.Router();
 adminRouter
@@ -9,10 +16,9 @@ adminRouter
   .patch(updateStudent)
   .delete(deleteStudent);
 
-
-
-adminRouter.route('/complaints').get((req, res) => {
-  res.send('all complaints');
-});
+adminRouter
+  .route('/complaint')
+  .get(getComplaints)
+  .patch(responseComplaint);
 
 module.exports = adminRouter;
