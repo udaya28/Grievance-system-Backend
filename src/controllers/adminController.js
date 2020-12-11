@@ -20,13 +20,24 @@ exports.getStudent = async (req, res) => {
 
 exports.createStudent = async (req, res) => {
   try {
-    const createdStudent = await studentDetails.create(req.body.data);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        createdStudent,
-      },
-    });
+    const data = req.body.data;
+    const isExist = await userAlreadyExist(data.rollNumber);
+    if(!isExist){
+
+      const createdStudent = await studentDetails.create(req.body.data);
+      res.status(201).json({
+        status: 'success',
+        data: {
+          createdStudent,
+        },
+      });
+    }else{
+      res.status(404).json({
+        status: 'fail',
+        message: "User already exist",
+      });
+    }
+    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
@@ -109,3 +120,14 @@ exports.responseComplaint = async (req, res) => {
     });
   }
 };
+
+
+const userAlreadyExist = async data =>{
+  const user = await studentDetails.find({rollNumber:data})
+  if(user.length === 0){
+    return false
+  }else{
+    return true
+  }
+
+}
