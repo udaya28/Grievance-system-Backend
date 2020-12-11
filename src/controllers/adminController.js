@@ -1,5 +1,5 @@
 const complaint = require('../model/complaintModel');
-const studentDetails = require('../model/userModel');
+const studentDetails = require('../model/studentModel');
 
 exports.getStudent = async (req, res) => {
   try {
@@ -23,7 +23,6 @@ exports.createStudent = async (req, res) => {
     const data = req.body.data;
     const isExist = await userAlreadyExist(data.rollNumber);
     if(!isExist){
-
       const createdStudent = await studentDetails.create(req.body.data);
       res.status(201).json({
         status: 'success',
