@@ -19,6 +19,7 @@ exports.getAdmin = async (req, res) => {
 
 exports.createAdmin = async (req, res) => {
   try {
+
     const data = req.body.data;
     const isExist = await adminAlreadyExist(data.userName);
     if(!isExist){
