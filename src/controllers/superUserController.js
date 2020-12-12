@@ -21,7 +21,6 @@ exports.createAdmin = async (req, res) => {
   try {
     const data = req.body.data;
     const isExist = await adminAlreadyExist(data.userName);
-    console.log(isExist)
     if(!isExist){
       const createdAdmin = await AdminDetails.create(req.body.data);
       res.status(201).json({
@@ -47,15 +46,13 @@ exports.createAdmin = async (req, res) => {
 
 exports.updateAdmin = async (req, res) => {
   try {
+    const id = req.params.id
     const updatedAdmin = await AdminDetails.updateOne(
-      req.body.data.old,
-      req.body.data.new
+      {_id:id},
+      req.body.data
     );
     res.status(200).json({
       status: 'success',
-      data: {
-        updatedAdmin,
-      },
     });
   } catch (error) {
     res.status(404).json({
@@ -67,13 +64,17 @@ exports.updateAdmin = async (req, res) => {
 
 exports.deleteAdmin = async (req, res) => {
   try {
-    const updatedAdmin = await AdminDetails.deleteOne(req.body.data);
-    res.status(200).json({
+    const id = req.params.id
+    const deletedAdmin = await AdminDetails.deleteOne({_id:id});
+    if(deletedAdmin.deletedCount === 1){
+      res.status(200).json({
       status: 'success',
-      data: {
-        updatedAdmin,
-      },
     });
+    }else{
+      res.status(200).json({
+        status: 'fail',
+      });
+    }
   } catch (error) {
     res.status(404).json({
       status: 'fail',

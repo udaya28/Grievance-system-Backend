@@ -5,8 +5,9 @@ const studentRouter = express.Router();
 
 studentRouter
   .route('/complaint')
-  .get(getComplaint)
   .post(postComplaint);
-
+studentRouter
+  .route('/complaint/:id')
+  .get(getComplaint)
 
 module.exports = studentRouter

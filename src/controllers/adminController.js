@@ -47,9 +47,10 @@ exports.createStudent = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   try {
+    const id = req.params.id
     const updatedStudent = await studentDetails.updateOne(
-      req.body.data.old,
-      req.body.data.new
+      {_id:id},
+      req.body.data
     );
     res.status(200).json({
       status: 'success',
@@ -67,13 +68,17 @@ exports.updateStudent = async (req, res) => {
 
 exports.deleteStudent = async (req, res) => {
   try {
-    const updatedStudent = await studentDetails.deleteOne(req.body.data);
-    res.status(200).json({
+    const id = req.params.id
+    const deletedStudent = await studentDetails.deleteOne({_id:id});
+    if(deletedStudent.deletedCount === 1){
+      res.status(204).json({
       status: 'success',
-      data: {
-        updatedStudent,
-      },
     });
+    }else{
+      res.status(200).json({
+        status: 'fail',
+      });
+    }
   } catch (error) {
     res.status(404).json({
       status: 'fail',

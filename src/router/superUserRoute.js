@@ -11,8 +11,11 @@ superUserRouter
   .route('/admin')
   .get(getAdmin)
   .post(createAdmin)
+  
+superUserRouter
+  .route('/admin/:id')  
   .patch(updateAdmin)
   .delete(deleteAdmin);
-
+  
 
 module.exports = superUserRouter;

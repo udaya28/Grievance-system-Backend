@@ -13,12 +13,16 @@ adminRouter
   .route('/studentDetails')
   .get(getStudent)
   .post(createStudent)
-  .patch(updateStudent)
-  .delete(deleteStudent);
+
 
 adminRouter
   .route('/complaint')
   .get(getComplaints)
   .patch(responseComplaint);
+
+adminRouter
+  .route('/studentDetails/:id')
+  .patch(updateStudent)
+  .delete(deleteStudent);
 
 module.exports = adminRouter;
