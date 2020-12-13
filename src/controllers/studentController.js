@@ -39,23 +39,41 @@ exports.postComplaint = async (req, res) => {
 
 exports.studentLogin = async (req, res) => {
   const { rollNumber, password } = req.body.data;
-  // console.log(rollNumber,password,process.env.JWT_SECRET)
+  // console.log(rollNumber, password, typeof process.env.JWT_SECRET);
   const user = await studentDetails.findOne({ rollNumber });
   if (user) {
-    console.log(user)
     const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
-    
-      res.status(200).json({ status: 'success',user });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '15d',
+      });
+      res.cookie('token', token, { httpOnly: true, maxAge: 1296000000 });
+      res.status(200).json({ status: 'success' });
     } else {
-      res.status(401).json({ status: 'fail' });
+      res.status(400).json({ status: 'fail' });
     }
   } else {
-    res.status(401).json({ status: 'fail' });
+    res.status(400).json({ status: 'fail' });
   }
 };
 
 exports.studentLogout = async (req, res) => {
-  console.log(req.body);
-  res.status(200).json(req.body);
+  res.cookie('token', '', { maxAge: 1 });
+  res.status(200).send();
+};
+
+exports.studentAuth = async (req, res) => {
+  console.log(req.cookies)
+  if (req.cookies.token) {
+    const token = req.cookies.token;
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+      if (err) {
+        res.status(400).json({ status: 'fail' });
+      }
+      console.log(decodedToken);
+      res.status(200).send();
+    });
+  } else {
+    res.status(400).json({ status: 'fail' });
+  }
 };
