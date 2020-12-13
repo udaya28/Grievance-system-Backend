@@ -16,7 +16,6 @@ exports.isValidAuth = async (req, res, next) => {
 };
 
 exports.authLogout = async (req, res) => {
-    console.log("logout")
   res.cookie('token', '', { maxAge: 1 });
   res.status(200).send();
 };
