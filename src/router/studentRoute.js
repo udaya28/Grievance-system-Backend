@@ -3,16 +3,15 @@ const {
   getComplaint,
   postComplaint,
   studentLogin,
-  studentLogout,
-  studentAuth
 } = require('../controllers/studentController');
+const { authLogout, isValidAuth } = require('../util/auth');
 
 const studentRouter = express.Router();
 
-studentRouter.route('/complaint').post(postComplaint);
-studentRouter.route('/complaint/:id').get(getComplaint);
 studentRouter.route('/login').post(studentLogin);
-studentRouter.route('/logout').post(studentLogout);
-studentRouter.route('/auth').post(studentAuth)
+studentRouter.route('/logout').post(authLogout);
+// studentRouter.use(isValidAuth);
+studentRouter.route('/complaint', isValidAuth).post(postComplaint);
+studentRouter.route('/complaint/:id', isValidAuth).get(getComplaint);
 
 module.exports = studentRouter;

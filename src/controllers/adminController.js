@@ -1,5 +1,7 @@
 const complaint = require('../model/complaintModel');
 const studentDetails = require('../model/studentModel');
+const AdminDetails = require('../model/AdminModel');
+
 
 exports.getStudent = async (req, res) => {
   try {
@@ -135,3 +137,26 @@ const userAlreadyExist = async data =>{
   }
 
 }
+
+
+
+exports.adminLogin = async (req, res) => {
+  const { userName, password } = req.body.data;
+  const user = await AdminDetails.findOne({ userName });
+  if (user) {
+    const isValid = await bcrypt.compare(password, user.password);
+    if (isValid) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: 60*30,
+      });
+      res.cookie('token', token, { httpOnly: true, maxAge: 60*30*1000 });
+      res.status(200).json({ status: 'success' });
+    } else {
+      res.status(400).json({ status: 'fail' });
+    }
+  } else {
+    res.status(400).json({ status: 'fail' });
+  }
+};
+
+

@@ -39,7 +39,6 @@ exports.postComplaint = async (req, res) => {
 
 exports.studentLogin = async (req, res) => {
   const { rollNumber, password } = req.body.data;
-  // console.log(rollNumber, password, typeof process.env.JWT_SECRET);
   const user = await studentDetails.findOne({ rollNumber });
   if (user) {
     const isValid = await bcrypt.compare(password, user.password);
@@ -57,23 +56,3 @@ exports.studentLogin = async (req, res) => {
   }
 };
 
-exports.studentLogout = async (req, res) => {
-  res.cookie('token', '', { maxAge: 1 });
-  res.status(200).send();
-};
-
-exports.studentAuth = async (req, res) => {
-  console.log(req.cookies)
-  if (req.cookies.token) {
-    const token = req.cookies.token;
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        res.status(400).json({ status: 'fail' });
-      }
-      console.log(decodedToken);
-      res.status(200).send();
-    });
-  } else {
-    res.status(400).json({ status: 'fail' });
-  }
-};
