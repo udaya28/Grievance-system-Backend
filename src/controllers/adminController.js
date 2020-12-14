@@ -1,7 +1,8 @@
 const complaint = require('../model/complaintModel');
 const studentDetails = require('../model/studentModel');
 const AdminDetails = require('../model/AdminModel');
-
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 exports.getStudent = async (req, res) => {
   try {

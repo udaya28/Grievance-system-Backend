@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 exports.getComplaint = async (req, res) => {
   try {
     const id = req.params.id;
-    const complaints = await Complaint.find({ _id: id });
+    const complaints = await Complaint.find({ studentId: id });
+    
     res.status(200).json({
       status: 'success',
       data: {

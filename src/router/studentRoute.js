@@ -10,8 +10,8 @@ const studentRouter = express.Router();
 
 studentRouter.route('/login').post(studentLogin);
 studentRouter.route('/logout').post(authLogout);
-// studentRouter.use(isValidAuth);
-studentRouter.route('/complaint', isValidAuth).post(postComplaint);
-studentRouter.route('/complaint/:id', isValidAuth).get(getComplaint);
+studentRouter.use(isValidAuth)
+studentRouter.route('/complaint').post(postComplaint);
+studentRouter.route('/complaint/:id').get(getComplaint);
 
 module.exports = studentRouter;

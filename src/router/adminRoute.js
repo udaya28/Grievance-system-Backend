@@ -16,14 +16,13 @@ const adminRouter = express.Router();
 adminRouter.route('/login').post(adminLogin);
 adminRouter.route('/logout').post(authLogout);
 adminRouter.use(isValidAuth);
-
-adminRouter.route('/studentDetails',isValidAuth).get(getStudent).post(createStudent);
+adminRouter.route('/studentDetails').get(getStudent).post(createStudent);
 
 adminRouter
-  .route('/studentDetails/:id',isValidAuth)
+  .route('/studentDetails/:id')
   .patch(updateStudent)
   .delete(deleteStudent);
 
-adminRouter.route('/complaint',isValidAuth).get(getComplaints).patch(responseComplaint);
+adminRouter.route('/complaint').get(getComplaints).patch(responseComplaint);
 
 module.exports = adminRouter;
