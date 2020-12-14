@@ -47,13 +47,13 @@ exports.studentLogin = async (req, res) => {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: '15d',
       });
-      res.cookie('token', token, { httpOnly: true, maxAge: 1296000000 });
+      res.cookie('token', token, { httpOnly: true, maxAge: 1296000000  });
       res.status(200).json({ status: 'success' });
     } else {
-      res.status(400).json({ status: 'fail' });
+      res.status(401).json({ status: 'fail' });
     }
   } else {
-    res.status(400).json({ status: 'fail' });
+    res.status(401).json({ status: 'fail' });
   }
 };
 
