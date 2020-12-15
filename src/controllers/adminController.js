@@ -150,8 +150,8 @@ exports.adminLogin = async (req, res) => {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: 60*30,
       });
-      res.cookie('token', token, { httpOnly: true, maxAge: 60*30*1000 });
-      res.status(200).json({ status: 'success' });
+      // res.cookie('token', token, { httpOnly: true, maxAge: 60*30*1000 });
+      res.status(200).json({ status: 'success',token });
     } else {
       res.status(400).json({ status: 'fail' });
     }

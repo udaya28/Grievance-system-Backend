@@ -9,12 +9,11 @@ const {
   adminLogin,
 } = require('../controllers/adminController');
 
-const { authLogout, isValidAuth } = require('../util/auth');
+const {  isValidAuth } = require('../util/auth');
 
 const adminRouter = express.Router();
 
 adminRouter.route('/login').post(adminLogin);
-adminRouter.route('/logout').post(authLogout);
 adminRouter.use(isValidAuth);
 adminRouter.route('/studentDetails').get(getStudent).post(createStudent);
 

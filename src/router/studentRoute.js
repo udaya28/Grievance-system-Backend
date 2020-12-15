@@ -9,7 +9,6 @@ const { authLogout, isValidAuth } = require('../util/auth');
 const studentRouter = express.Router();
 
 studentRouter.route('/login').post(studentLogin);
-studentRouter.route('/logout').post(authLogout);
 studentRouter.use(isValidAuth)
 studentRouter.route('/complaint').post(postComplaint);
 studentRouter.route('/complaint/:id').get(getComplaint);

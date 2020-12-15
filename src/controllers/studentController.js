@@ -6,7 +6,7 @@ exports.getComplaint = async (req, res) => {
   try {
     const id = req.params.id;
     const complaints = await Complaint.find({ studentId: id });
-    
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -45,10 +45,10 @@ exports.studentLogin = async (req, res) => {
     const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '15d',
+        expiresIn: `${1000 * 60 * 15}ms`,
       });
-      res.cookie('token', token, { httpOnly: true, maxAge: 1296000000  });
-      res.status(200).json({ status: 'success' });
+      // res.cookie('token', token, { httpOnly: true, maxAge: 1296000000  });
+      res.status(200).json({ status: 'success', token });
     } else {
       res.status(401).json({ status: 'fail' });
     }
@@ -56,4 +56,3 @@ exports.studentLogin = async (req, res) => {
     res.status(401).json({ status: 'fail' });
   }
 };
-
