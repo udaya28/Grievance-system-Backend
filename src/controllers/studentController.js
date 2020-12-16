@@ -41,6 +41,7 @@ exports.postComplaint = async (req, res) => {
 exports.studentLogin = async (req, res) => {
   const { rollNumber, password } = req.body.data;
   const user = await studentDetails.findOne({ rollNumber });
+  console.log(user,req.body.data)
   if (user) {
     const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
