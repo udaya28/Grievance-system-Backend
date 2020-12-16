@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 exports.isValidAuth = async (req, res, next) => {
-  if (req.cookies.token) {
-    const token = req.cookies.token;
+  console.log()
+  if (req.headers.token) {
+    const token = req.headers.token;
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
       if (err) {
         res.status(401).json({ status: 'fail' });
