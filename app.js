@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
-app.use(cors({credentials: true, origin: 'https://udaya28.github.io/'}));
+app.use(cors({credentials: true, origin: '*'}));
 // https://udaya28.github.io/
 app.use(cookieParser());
 app.use(express.json());
