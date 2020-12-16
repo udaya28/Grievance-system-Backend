@@ -1,4 +1,4 @@
-const AdminDetails = require('../model/AdminModel');
+const AdminDetails = require('../model/adminModel');
 
 exports.getAdmin = async (req, res) => {
   try {

@@ -22,9 +22,9 @@ exports.checkAuth = async (req, res, next) => {
       if (err) {
         res.status(401).json({ status: 'fail' });
       }
-      console.log(decodedToken);
+      // console.log(decodedToken);
       if (decodedToken) {
-        console.log(Date.now() , decodedToken.exp * 1000)
+        // console.log(Date.now() , decodedToken.exp * 1000)
         if (Date.now() <= decodedToken.exp * 1000) {
           req.user = decodedToken.id;
           res.status(200).json({ status: 'success', id: decodedToken.id });

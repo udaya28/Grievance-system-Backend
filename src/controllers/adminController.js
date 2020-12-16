@@ -1,6 +1,6 @@
 const complaint = require('../model/complaintModel');
 const studentDetails = require('../model/studentModel');
-const AdminDetails = require('../model/AdminModel');
+const AdminDetails = require('../model/adminModel');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
