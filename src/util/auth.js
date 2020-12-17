@@ -7,7 +7,7 @@ exports.isValidAuth = async (req, res, next) => {
       if (err) {
         res.status(401).json({ status: 'fail' });
       }
-      req.user = decodedToken.id;
+      req.userId = decodedToken.id;
       next();
     });
   } else {
