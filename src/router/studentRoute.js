@@ -15,6 +15,4 @@ studentRouter.route('/complaint').post(postComplaint);
 studentRouter.route('/complaint/:id').get(getComplaint);
 studentRouter.route('/details/:id').get(getDetails);
 
-
-
 module.exports = studentRouter;
