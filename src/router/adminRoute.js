@@ -19,7 +19,7 @@ adminRouter.use((req, res, next) => {
   if (req.isAdmin) {
     next();
   } else {
-    res.status(401).json({ status: 'fail' });
+    res.status(401).json({ status: 'cross verification failed' });
   }
 });
 adminRouter.route('/studentDetails').get(getStudent).post(createStudent);

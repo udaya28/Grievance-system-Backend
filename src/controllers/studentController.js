@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const studentDetails = require('../model/studentModel');
 const bcrypt = require('bcrypt');
 
-
-
 exports.getDetails = async (req, res) => {
   try {
     const id = req.params.id;
@@ -15,24 +13,22 @@ exports.getDetails = async (req, res) => {
       details[0].password = '';
       res.status(200).json({
         status: 'success',
-        details
+        details,
       });
-    }else {
+    } else {
       res.status(401).json({
         status: 'fail',
         message: 'student id does not match with token id',
       });
     }
-  } 
-  catch (error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
     res.status(404).json({
       status: 'failed in code',
       message: error,
     });
   }
 };
-
 
 exports.getComplaint = async (req, res) => {
   try {
@@ -46,7 +42,7 @@ exports.getComplaint = async (req, res) => {
           complaints,
         },
       });
-    }else {
+    } else {
       res.status(401).json({
         status: 'fail',
         message: 'student id does not match with token id',
@@ -92,11 +88,15 @@ exports.studentLogin = async (req, res) => {
   if (user) {
     const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: `${1000 * 60 * 30}ms`,//30 min
-      });
+      const token = jwt.sign(
+        { id: user._id, isStudent: true },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: `${1000 * 60 * 30}ms`, //30 min
+        }
+      );
       // res.cookie('token', token, { httpOnly: true, maxAge: 1296000000  });
-      res.status(200).json({ status: 'success', token,id:user._id });
+      res.status(200).json({ status: 'success', token, id: user._id });
     } else {
       res.status(401).json({ status: 'fail' });
     }

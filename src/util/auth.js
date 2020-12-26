@@ -9,6 +9,7 @@ exports.isValidAuth = async (req, res, next) => {
       }
       req.userId = decodedToken.id;
       req.isAdmin = decodedToken.isAdmin && true 
+      req.isStudent = decodedToken.isStudent && true 
       // console.log(decodedToken)
       // console.log(req.userId,req.isAdmin)
       next();
