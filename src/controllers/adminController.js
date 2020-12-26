@@ -1,8 +1,8 @@
 const complaint = require('../model/complaintModel');
 const studentDetails = require('../model/studentModel');
 const AdminDetails = require('../model/adminModel');
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.getStudent = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ exports.createStudent = async (req, res) => {
   try {
     const data = req.body.data;
     const isExist = await userAlreadyExist(data.rollNumber);
-    if(!isExist){
+    if (!isExist) {
       const createdStudent = await studentDetails.create(req.body.data);
       res.status(201).json({
         status: 'success',
@@ -33,13 +33,12 @@ exports.createStudent = async (req, res) => {
           createdStudent,
         },
       });
-    }else{
+    } else {
       res.status(404).json({
         status: 'fail',
-        message: "User already exist",
+        message: 'User already exist',
       });
     }
-    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
@@ -50,9 +49,9 @@ exports.createStudent = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   try {
-    const id = req.params.id
+    const id = req.params.id;
     const updatedStudent = await studentDetails.updateOne(
-      {_id:id},
+      { _id: id },
       req.body.data
     );
     res.status(200).json({
@@ -71,13 +70,13 @@ exports.updateStudent = async (req, res) => {
 
 exports.deleteStudent = async (req, res) => {
   try {
-    const id = req.params.id
-    const deletedStudent = await studentDetails.deleteOne({_id:id});
-    if(deletedStudent.deletedCount === 1){
+    const id = req.params.id;
+    const deletedStudent = await studentDetails.deleteOne({ _id: id });
+    if (deletedStudent.deletedCount === 1) {
       res.status(204).json({
-      status: 'success',
-    });
-    }else{
+        status: 'success',
+      });
+    } else {
       res.status(200).json({
         status: 'fail',
       });
@@ -89,8 +88,6 @@ exports.deleteStudent = async (req, res) => {
     });
   }
 };
-
-
 
 exports.getComplaints = async (req, res) => {
   try {
@@ -108,7 +105,6 @@ exports.getComplaints = async (req, res) => {
     });
   }
 };
-
 
 exports.responseComplaint = async (req, res) => {
   try {
@@ -128,18 +124,14 @@ exports.responseComplaint = async (req, res) => {
   }
 };
 
-
-const userAlreadyExist = async data =>{
-  const user = await studentDetails.find({rollNumber:data})
-  if(user.length === 0){
-    return false
-  }else{
-    return true
+const userAlreadyExist = async (data) => {
+  const user = await studentDetails.find({ rollNumber: data });
+  if (user.length === 0) {
+    return false;
+  } else {
+    return true;
   }
-
-}
-
-
+};
 
 exports.adminLogin = async (req, res) => {
   const { userName, password } = req.body.data;
@@ -147,11 +139,15 @@ exports.adminLogin = async (req, res) => {
   if (user) {
     const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: `${1000 * 60 * 30}ms`,//30 min
-      });
+      const token = jwt.sign(
+        { id: user._id, isAdmin: true },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: `${1000 * 60 * 30}ms`, //30 min
+        }
+      );
       // res.cookie('token', token, { httpOnly: true, maxAge: 60*30*1000 });
-      res.status(200).json({ status: 'success',token });
+      res.status(200).json({ status: 'success', token });
     } else {
       res.status(401).json({ status: 'fail' });
     }
@@ -159,5 +155,3 @@ exports.adminLogin = async (req, res) => {
     res.status(401).json({ status: 'fail' });
   }
 };
-
-

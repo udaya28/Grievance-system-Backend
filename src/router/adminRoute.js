@@ -9,12 +9,19 @@ const {
   adminLogin,
 } = require('../controllers/adminController');
 
-const {  isValidAuth } = require('../util/auth');
+const { isValidAuth } = require('../util/auth');
 
 const adminRouter = express.Router();
 
 adminRouter.route('/login').post(adminLogin);
 adminRouter.use(isValidAuth);
+adminRouter.use((req, res, next) => {
+  if (req.isAdmin) {
+    next();
+  } else {
+    res.status(401).json({ status: 'fail' });
+  }
+});
 adminRouter.route('/studentDetails').get(getStudent).post(createStudent);
 
 adminRouter
