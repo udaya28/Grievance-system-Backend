@@ -109,13 +109,30 @@ exports.getComplaints = async (req, res) => {
 exports.responseComplaint = async (req, res) => {
   try {
     const { id, data } = { ...req.body.data };
-    const responseMade = await complaint.updateOne(id, data);
+    const {response} = data;
+    const currentComplaint = await complaint.findOne(id);
+    // console.log(currentComplaint);
+    if(typeof response !== 'string'){
+      res.status(404).json({
+        status: 'fail',
+        message: 'invalid payload',
+      });
+    }
+    if(currentComplaint.response ==='' ){
+      const responseMade = await complaint.updateOne(id, {response,status:"replayed"});
     res.status(200).json({
       status: 'success',
       data: {
         responseMade,
       },
     });
+    }else{
+      res.status(404).json({
+        status: 'fail',
+        message: 'already responded',
+      });
+    }
+    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
