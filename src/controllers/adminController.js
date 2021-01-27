@@ -44,12 +44,10 @@ exports.createStudent = async (req, res) => {
       gender,
       dateOfBirth,
     ];
-    const flag = arrData.every((data)=>{
-      return data !== undefined
-    })
-    // console.log(flag)
-    // console.log(arrData)
-    if(flag){
+    const flag = arrData.every((data) => {
+      return data !== undefined;
+    });
+    if (flag) {
       const isExist = await userAlreadyExist(data.rollNumber);
       if (!isExist) {
         const createdStudent = await studentDetails.create(req.body.data);
@@ -65,13 +63,12 @@ exports.createStudent = async (req, res) => {
           message: 'User already exist',
         });
       }
-    }else{
+    } else {
       res.status(404).json({
         status: 'fail',
         message: 'data missing',
       });
     }
-    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
