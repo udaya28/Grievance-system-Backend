@@ -13,6 +13,7 @@ const studentDetailsSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    minlength: [3, 'first name should be greater than 3'],
   },
   departmentName: {
     type: String,
