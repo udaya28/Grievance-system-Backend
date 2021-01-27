@@ -24,21 +24,54 @@ exports.getStudent = async (req, res) => {
 exports.createStudent = async (req, res) => {
   try {
     const data = req.body.data;
-    const isExist = await userAlreadyExist(data.rollNumber);
-    if (!isExist) {
-      const createdStudent = await studentDetails.create(req.body.data);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          createdStudent,
-        },
-      });
-    } else {
+    const {
+      firstName,
+      secondName,
+      rollNumber,
+      password,
+      departmentName,
+      jointYear,
+      gender,
+      dateOfBirth,
+    } = data;
+    const arrData = [
+      firstName,
+      secondName,
+      rollNumber,
+      password,
+      departmentName,
+      jointYear,
+      gender,
+      dateOfBirth,
+    ];
+    const flag = arrData.every((data)=>{
+      return data !== undefined
+    })
+    // console.log(flag)
+    // console.log(arrData)
+    if(flag){
+      const isExist = await userAlreadyExist(data.rollNumber);
+      if (!isExist) {
+        const createdStudent = await studentDetails.create(req.body.data);
+        res.status(201).json({
+          status: 'success',
+          data: {
+            createdStudent,
+          },
+        });
+      } else {
+        res.status(404).json({
+          status: 'fail',
+          message: 'User already exist',
+        });
+      }
+    }else{
       res.status(404).json({
         status: 'fail',
-        message: 'User already exist',
+        message: 'data missing',
       });
     }
+    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
@@ -109,30 +142,32 @@ exports.getComplaints = async (req, res) => {
 exports.responseComplaint = async (req, res) => {
   try {
     const { id, data } = { ...req.body.data };
-    const {response} = data;
+    const { response } = data;
     const currentComplaint = await complaint.findOne(id);
     // console.log(currentComplaint);
-    if(typeof response !== 'string'){
+    if (typeof response !== 'string') {
       res.status(404).json({
         status: 'fail',
         message: 'invalid payload',
       });
     }
-    if(currentComplaint.response ==='' ){
-      const responseMade = await complaint.updateOne(id, {response,status:"replayed"});
-    res.status(200).json({
-      status: 'success',
-      data: {
-        responseMade,
-      },
-    });
-    }else{
+    if (currentComplaint.response === '') {
+      const responseMade = await complaint.updateOne(id, {
+        response,
+        status: 'replayed',
+      });
+      res.status(200).json({
+        status: 'success',
+        data: {
+          responseMade,
+        },
+      });
+    } else {
       res.status(404).json({
         status: 'fail',
         message: 'already responded',
       });
     }
-    
   } catch (error) {
     res.status(404).json({
       status: 'fail',
