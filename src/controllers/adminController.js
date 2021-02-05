@@ -7,12 +7,16 @@ const jwt = require('jsonwebtoken');
 exports.getStudent = async (req, res) => {
   try {
     const Students = await studentDetails.find({});
+    for (let i = 0; i < Students.length; i++) {
+      Students[i].password = ""
+    }
     res.status(200).json({
       status: 'success',
       data: {
         Students,
       },
     });
+
   } catch (error) {
     res.status(404).json({
       status: 'fail',
