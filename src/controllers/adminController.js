@@ -8,7 +8,7 @@ exports.getStudent = async (req, res) => {
   try {
     const Students = await studentDetails.find({});
     for (let i = 0; i < Students.length; i++) {
-      Students[i].password = ""
+      Students[i].password = '';
     }
     res.status(200).json({
       status: 'success',
@@ -16,7 +16,6 @@ exports.getStudent = async (req, res) => {
         Students,
       },
     });
-
   } catch (error) {
     res.status(404).json({
       status: 'fail',
@@ -84,16 +83,28 @@ exports.createStudent = async (req, res) => {
 exports.updateStudent = async (req, res) => {
   try {
     const id = req.params.id;
-    const updatedStudent = await studentDetails.updateOne(
-      { _id: id },
-      req.body.data
-    );
-    res.status(200).json({
-      status: 'success',
-      data: {
-        updatedStudent,
-      },
-    });
+    let isExist;
+    if (req.body.data.rollNumber) {
+      isExist = await userAlreadyExist(req.body.data.rollNumber);
+      if (isExist) {
+        res.status(404).json({
+          status: 'fail',
+          message: 'User already exist',
+        });
+      }
+    }
+    if (!isExist) {
+      const updatedStudent = await studentDetails.updateOne(
+        { _id: id },
+        req.body.data
+      );
+      res.status(200).json({
+        status: 'success',
+        data: {
+          updatedStudent,
+        },
+      });
+    }
   } catch (error) {
     res.status(404).json({
       status: 'fail',
